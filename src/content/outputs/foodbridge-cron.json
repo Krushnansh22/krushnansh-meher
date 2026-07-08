@@ -1,0 +1,12 @@
+{
+  "kind": "text",
+  "title": "FoodBridge — nightly redistribution cron",
+  "lines": [
+    "[02:00:00] cron/redistribute: job started",
+    "[02:00:01] scanning 34 partner locations for surplus flags",
+    "[02:00:03] matched 19 surplus lots to 12 receiving shelters",
+    "[02:00:04] optimizing routes... 6 vehicles, 12 stops",
+    "[02:00:06] SMS notifications queued: 31",
+    "[02:00:07] job complete — 412kg redirected, 0 failures"
+  ]
+}

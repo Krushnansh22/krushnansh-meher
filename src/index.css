@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --paper: #fafafa;
+  --cell: #ffffff;
+  --code: #f6f6f8;
+  --border: #e4e4ea;
+  --ink: #1a1a2e;
+  --muted: #6b7280;
+  --accent: #f37626; /* Jupyter's own orange */
+  --accent-soft: #fef1e6;
+  --run: #1f8a5f;
+  --selected: #3b6ef6;
+  --jp-chrome: #ffffff;
+  --jp-chrome-border: #e0e0e0;
+  --jp-chrome-ink: #1a1a1a;
+  --jp-chrome-muted: #767676;
+}
+
+.dark {
+  --paper: #181818;
+  --cell: #212122;
+  --code: #1b1b1c;
+  --border: #363638;
+  --ink: #d9d9dc;
+  --muted: #8a8a90;
+  --accent: #f37626;
+  --accent-soft: #3a2416;
+  --run: #4ec9a8;
+  --selected: #5b8dff;
+  --jp-chrome: #262626;
+  --jp-chrome-border: #3a3a3a;
+  --jp-chrome-ink: #d9d9d9;
+  --jp-chrome-muted: #8a8a8a;
+}
+
+html,
+body {
+  background-color: var(--paper);
+  color: var(--ink);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+::selection {
+  background: var(--accent-soft);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

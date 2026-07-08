@@ -1,0 +1,11 @@
+{
+  "kind": "metrics",
+  "title": "RAGSmith — GA optimization run",
+  "metrics": [
+    { "label": "Generations run", "value": "48", "hint": "converged early" },
+    { "label": "Best fitness", "value": "0.912", "hint": "retrieval@k score" },
+    { "label": "Fitness gain", "value": "+37.4%", "hint": "vs. baseline chunking" },
+    { "label": "Population size", "value": "60", "hint": "chunk-strategy genomes" }
+  ],
+  "footer": "Best genome: hybrid semantic+fixed chunking, k=6, overlap=15%"
+}
