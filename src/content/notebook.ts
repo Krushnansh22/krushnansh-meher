@@ -157,10 +157,10 @@ show_dashboard(
 
 ### Get in touch
 
-- **Email** — [kabir.mehta@example.com](mailto:kabir.mehta@example.com)
-- **GitHub** — [github.com/kabirmehta](https://github.com/kabirmehta)
-- **LinkedIn** — [linkedin.com/in/kabirmehta](https://linkedin.com/in/kabirmehta)
-- **Resume** — [Download PDF](/resume.pdf)
+- **Email** — [krushnansh22@gmail.com](mailto:krushnansh22@gmail.com)
+- **GitHub** — [github.com/krushnansh22](https://github.com/krushnansh22)
+- **LinkedIn** — [linkedin.com/in/krushnansh_meher](https://www.linkedin.com/in/krushnansh-meher-71199a271/)
+- **Resume** — [View PDF](https://drive.google.com/file/d/1h5QxLgZLAXmYXxefmBSLLdvQwwHNOzFK/view?usp=sharing)
 
 \`\`\`
 >>> # kernel idle. thanks for scrolling this far.

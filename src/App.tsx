@@ -29,7 +29,7 @@ export default function App() {
         onToggleTheme={toggle}
       />
 
-      <main className="max-w-[820px] mx-auto px-3 sm:px-6 py-8 sm:py-12">
+      <main className="max-w-[1300px] mx-auto px-6 py-10">
         <div className="flex flex-col gap-4">
           {notebook.map((cell) =>
             cell.type === "markdown" ? (
