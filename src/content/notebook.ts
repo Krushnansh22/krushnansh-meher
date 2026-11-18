@@ -1,169 +1,235 @@
-import ragsmith from "./outputs/ragsmith-metrics.json";
-import aetherCapsule from "./outputs/aether-capsule-response.json";
-import foodbridge from "./outputs/foodbridge-cron.json";
-import slmQuery from "./outputs/slm-query-response.json";
-import uidai360 from "./outputs/uidai-360-dashboard.json";
+import { resumeData, type ProjectItem } from "./resumeData";
 
 export type OutputKind =
-  | "text"
-  | "json"
   | "metrics"
-  | "image"
-  | "iframe"
+  | "json"
+  | "text"
+  | "typewriter"
   | "links"
-  | "typewriter";
+  | "iframe"
+  | "image"
+  | "custom";
 
 export interface CodeOutput {
   kind: OutputKind;
-  data: unknown;
+  data: any;
 }
 
 export type Cell =
-  | { id: string; type: "markdown"; content: string }
+  | {
+      id: string;
+      type: "markdown";
+      sectionId?: string;
+      content: string;
+    }
   | {
       id: string;
       type: "code";
+      sectionId?: string;
       language: string;
       code: string;
       output: CodeOutput;
+    }
+  | {
+      id: string;
+      type: "project";
+      sectionId?: string;
+      project: ProjectItem;
     };
 
-/**
- * Ordered array of notebook cells. This is the single source of truth
- * for the entire page — adding a project means adding a cell object here,
- * no component code needs to change.
- */
 export const notebook: Cell[] = [
+  // 1. Profile & Bio Cell
   {
     id: "intro",
     type: "markdown",
+    sectionId: "intro",
     content: `# Krushnansh Meher
+### Software Development &nbsp;|&nbsp; AI / ML Engineering &nbsp;|&nbsp; Backend Systems
+**Pune, India** &nbsp;•&nbsp; **VIT Pune (CGPA: 9.12)** &nbsp;•&nbsp; **IEEE Published Author (INCECT 2026)**
 
-### Backend & ML Systems Engineer
+[![GitHub](https://img.shields.io/badge/GitHub-Krushnansh22-181717?style=flat&logo=github)](https://github.com/Krushnansh22) [![LinkedIn](https://img.shields.io/badge/LinkedIn-krushnansh--meher-0A66C2?style=flat&logo=linkedin)](https://www.linkedin.com/in/krushnansh-meher-71199a271) [![Email](https://img.shields.io/badge/Email-krushnansh22%40gmail.com-EA4335?style=flat&logo=gmail)](mailto:krushnansh22@gmail.com)
 
-\`\`\`python
->>> print(profile.summary())
+---
 
-"Builds retrieval systems, backend infrastructure,
-and small on-device AI models that solve
-real-world problems."
-\`\`\`
-
-## What I Build
-
-I work on the infrastructure that powers AI products:
-
-- Backend APIs
-- Retrieval-Augmented Generation (RAG)
-- ML inference pipelines
-- On-device AI
-- Data engineering & automation
-
-## Tech Stack
-
-\`Python\`
-\`FastAPI\`
-\`PyTorch\`
-\`ONNX\`
-\`PostgreSQL\`
-\`LangChain\`
-\`Docker\`
-
-> **Currently**
->
-> Open to Backend, AI Infrastructure and ML Systems internships / full-time opportunities.
-
-Click **Run** on any cell below to explore a real project.`,
+> **Executive Summary**  
+> AI & ML undergraduate at Vishwakarma Institute of Technology, Pune (**CGPA: 9.12**) with production experience building backend APIs, RAG systems, and real-time voice AI. IEEE-published author (INCECT 2026) focused on retrieval, agentic systems, and on-device inference. Seeking an AI/ML or backend internship where I can ship end-to-end systems.
+`,
   },
-  {
-    id: "ragsmith",
-    type: "code",
-    language: "python",
-    code: `from ragsmith.optimizer import GeneticChunker
 
-config = GeneticChunker(
-    population_size=60,
-    generations=50,
-    mutation_rate=0.08,
-    fitness_fn="retrieval_at_k",
-    k=6,
+  // 2. Interactive Diagnostics Code Cell
+  {
+    id: "diagnostics",
+    type: "code",
+    sectionId: "diagnostics",
+    language: "python",
+    code: `import krushnansh as km
+
+# Query profile telemetry and engineering verification
+overview = km.get_candidate_profile(
+    degree="B.Tech AI & ML @ VIT Pune",
+    cgpa=9.12,
+    publications=["IEEE INCECT 2026 (Paper ID 4477)"],
+    roles=["AI Intern @ Maalibu", "Software Intern @ Infotech"],
 )
 
-best_genome = config.evolve(corpus="./docs/knowledge_base")
-print(best_genome.summary())`,
-    output: { kind: "metrics", data: ragsmith },
+print(overview.metrics_summary())`,
+    output: {
+      kind: "metrics",
+      data: {
+        title: "Candidate Verification & Key Indicators",
+        metrics: [
+          { label: "B.Tech CGPA", value: "9.12", hint: "VIT Pune (AI & ML)" },
+          { label: "IEEE Publication", value: "INCECT '26", hint: "Paper ID 4477 (IEEE Xplore)" },
+          { label: "Production APIs", value: "2 Deployed", hint: "Voice Agent & Face Auth" },
+          { label: "Status", value: "Available", hint: "Open for Internships" },
+        ],
+        footer: "Candidate loaded successfully. All code, repos, and publications verified.",
+      },
+    },
   },
+
+  // 3. Technical Skills
   {
-    id: "aether-capsule",
-    type: "code",
-    language: "python",
-    code: `from aether.router import CapsuleRouter
-
-router = CapsuleRouter(region="ap-south-1")
-router.register_routes(app.routes)
-
-response = router.deploy(
-    capsule="checkout-service",
-    healthcheck="/healthz",
-)
-print(response.json())`,
-    output: { kind: "json", data: aetherCapsule },
-  },
-  {
-    id: "foodbridge",
-    type: "code",
-    language: "python",
-    code: `from foodbridge.jobs import redistribute
-
-@cron.schedule("0 2 * * *")
-def nightly_redistribution():
-    surplus = redistribute.scan_locations()
-    matches = redistribute.match(surplus, receiving_shelters())
-    routes = redistribute.optimize_routes(matches, vehicles=6)
-    redistribute.notify_and_dispatch(routes)`,
-    output: { kind: "text", data: foodbridge },
-  },
-  {
-    id: "slm-inference",
-    type: "code",
-    language: "python",
-    code: `from onnxruntime_genai import Model
-
-model = Model("phi-3-mini-int4-onnx", device="npu")
-query = "Summarize this week's expenses in one sentence."
-
-response = model.generate(query, max_tokens=48, stream=True)
-print(response)`,
-    output: { kind: "typewriter", data: slmQuery },
-  },
-  {
-    id: "uidai-360",
-    type: "code",
-    language: "python",
-    code: `# Visualization trigger — renders an already-hosted,
-# already-public dashboard. No live query happens from
-# this page; it's a static <iframe> pointed at a share link.
-
-show_dashboard(
-    source="uidai-360",
-    view="enrollment_trends",
-)`,
-    output: { kind: "iframe", data: uidai360 },
-  },
-  {
-    id: "closing",
+    id: "skills",
     type: "markdown",
-    content: `---
+    sectionId: "skills",
+    content: `## 🛠 Technical Stack & Engineering Capabilities
 
-### Get in touch
+| Domain | Core Technologies & Libraries |
+| :--- | :--- |
+| **Languages** | \`Python\` \`Java\` \`C / C++\` \`SQL\` \`R\` \`JavaScript / TypeScript\` |
+| **AI / ML** | \`PyTorch\` \`TensorFlow\` \`Scikit-learn\` \`OpenCV\` \`MediaPipe\` \`ONNX\` \`NLP\` \`RAG\` \`Computer Vision\` \`Model Fine-tuning\` |
+| **Backend & Cloud** | \`FastAPI\` \`Flask\` \`REST APIs\` \`WebSockets\` \`PostgreSQL\` \`MongoDB\` \`Docker\` \`Linux\` \`Git / GitHub\` |
+| **LLM & Agent Tooling** | \`LangChain\` \`FAISS\` \`Sentence-Transformers\` \`Ollama\` \`Azure OpenAI\` \`Gemini\` \`Groq\` \`MCP (Model Context Protocol)\` |
+`,
+  },
 
-- **Email** — [krushnansh22@gmail.com](mailto:krushnansh22@gmail.com)
-- **GitHub** — [github.com/krushnansh22](https://github.com/krushnansh22)
-- **LinkedIn** — [linkedin.com/in/krushnansh_meher](https://www.linkedin.com/in/krushnansh-meher-71199a271/)
-- **Resume** — [View PDF](https://drive.google.com/file/d/1h5QxLgZLAXmYXxefmBSLLdvQwwHNOzFK/view?usp=sharing)
+  // 4. Work Experience
+  {
+    id: "experience",
+    type: "markdown",
+    sectionId: "experience",
+    content: `## 💼 Production Work Experience
+
+### 1. AI Intern — Maalibu Digital Media (Maalibu Sphere)
+*Remote &nbsp;|&nbsp; Jun 2025 – Jul 2025*
+- Built a **real-time bilingual (English/Hindi) AI voice agent** integrating Plivo telephony with Azure OpenAI and Google Gemini.
+- Engineered a **low-latency WebSocket audio-streaming pipeline** with MongoDB logging, Google Sheets automated synchronization, and encrypted patient-data storage using **FastAPI**.
+- **Team Leadership:** Led a team of 5 interns across voice AI, frontend, and data-pipeline development.
+- **Technologies:** \`FastAPI\` \`WebSockets\` \`Azure OpenAI\` \`Google Gemini\` \`Plivo\` \`MongoDB\`
+
+---
+
+### 2. Software Intern — Infotech Incorporate
+*Remote &nbsp;|&nbsp; Jan 2025 – Apr 2025*
+- Built a high-accuracy **face-verification API** (Python, FastAPI, OpenCV) integrated with a .NET MAUI mobile app.
+- **Production Impact:** Successfully deployed at a client MNC in Dhule and remains in active production use.
+- Owned client presentations and the complete SDLC, from initial requirements gathering through production deployment.
+- **Technologies:** \`Python\` \`FastAPI\` \`OpenCV\` \`.NET MAUI\` \`Computer Vision\`
+`,
+  },
+
+  // 5. Research & Publication
+  {
+    id: "publication",
+    type: "markdown",
+    sectionId: "publication",
+    content: `## 📜 Research & Publication
+
+### **RAGEBOT: An Intelligent Context-Aware System for LLM-Assisted Software Development**
+**IEEE INCECT 2026** &nbsp;•&nbsp; **Paper ID 4477** &nbsp;•&nbsp; *Published in IEEE Xplore, Oct 2026*
+
+> **Abstract & Architectural Highlights:**  
+> - Co-authored a CLI + MCP (Model Context Protocol) context engine that indexes codebases for natural-language querying with persistent multi-turn sessions.
+> - Implemented semantic retrieval using **FAISS** + **Sentence-Transformers** and multi-provider LLM support (**Google Gemini**, **Groq**, **Ollama**), plus automated documentation generation and unit test scaffolding.
+> - **Focus Areas:** Retrieval Augmented Generation (RAG), Context Window Optimization, Developer Tooling.
+
+\`IEEE INCECT 2026\` \`IEEE Xplore\` \`MCP\` \`FAISS\` \`Sentence-Transformers\` \`Groq\` \`Gemini\`
+`,
+  },
+
+  // 6. Projects Header
+  {
+    id: "projects-header",
+    type: "markdown",
+    sectionId: "projects",
+    content: `## 🚀 Featured Projects
+*Clean architectures, open-source repositories, and zero cloud lock-in.*
+`,
+  },
+
+  // 7. Projects - Structured as dedicated ProjectCardCells
+  {
+    id: "proj-ragsmith",
+    type: "project",
+    sectionId: "projects",
+    project: resumeData.projects[0], // RAGSmith
+  },
+  {
+    id: "proj-modelmint",
+    type: "project",
+    sectionId: "projects",
+    project: resumeData.projects[1], // ModelMint
+  },
+  {
+    id: "proj-headmouse",
+    type: "project",
+    sectionId: "projects",
+    project: resumeData.projects[2], // HeadMouse
+  },
+  {
+    id: "proj-supplychain",
+    type: "project",
+    sectionId: "projects",
+    project: resumeData.projects[3], // Supply-Chain Resilience Agent
+  },
+
+  // 8. Education & Leadership
+  {
+    id: "education",
+    type: "markdown",
+    sectionId: "education",
+    content: `## 🎓 Education & Campus Leadership
+
+### **Education**
+- **B.Tech in Computer Science & Engineering (AI & ML)**  
+  *Vishwakarma Institute of Technology, Pune* &nbsp;|&nbsp; 2025 – 2028  
+  **CGPA: 9.12**
+- **Diploma in Artificial Intelligence & Machine Learning**  
+  *Government Polytechnic, Nagpur* &nbsp;|&nbsp; 2022 – 2025  
+  **Percentage: 94.25%**
+
+---
+
+### **Activities & Leadership**
+- **President | Rotaract Club, VIT Pune** *(2026 – Present)*  
+  Lead the club's executive team and direct community-service, technical innovation, and professional-development initiatives across the campus.
+- **AIML Head | IEEE CIS Chapter, VIT Pune** *(Nov 2025 – Present)*  
+  Organized deep-learning and computer-vision workshops, mentoring engineering peers in PyTorch and real-world ML deployment.
+`,
+  },
+
+  // 9. Contact & Socials
+  {
+    id: "contact",
+    type: "markdown",
+    sectionId: "contact",
+    content: `## 📬 Get in Touch & Connect
+
+I am actively looking for **AI / ML Engineering** and **Backend Systems** internships and roles where I can build and deploy high-impact software.
+
+- **Email:** [krushnansh22@gmail.com](mailto:krushnansh22@gmail.com)
+- **LinkedIn:** [linkedin.com/in/krushnansh-meher-71199a271](https://www.linkedin.com/in/krushnansh-meher-71199a271)
+- **GitHub:** [github.com/Krushnansh22](https://github.com/Krushnansh22)
+- **Phone:** [+91 9049865451](tel:+919049865451)
+- **Location:** Pune, India
+- **Resume:** [Download Krushnansh_Meher_Resume_2026.docx](/Krushnansh_Meher_Resume_2026.docx)
 
 \`\`\`
->>> # kernel idle. thanks for scrolling this far.
-\`\`\``,
+# Python 3 kernel idle. Cell execution complete.
+>>> krushnansh.status
+'Ready to ship high-performance AI and backend systems.'
+\`\`\`
+`,
   },
 ];

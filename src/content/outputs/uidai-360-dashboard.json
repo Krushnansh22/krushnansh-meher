@@ -1,7 +1,0 @@
-{
-  "kind": "iframe",
-  "title": "UIDAI-360 — enrollment trends dashboard",
-  "src": "",
-  "fallbackImage": "",
-  "note": "Replace `src` with your hosted Looker Studio / Streamlit share link once available. Falls back to a static caption when empty."
-}

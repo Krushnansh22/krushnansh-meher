@@ -186,6 +186,7 @@ const renderers: Record<OutputKind, (props: RendererProps) => JSX.Element> = {
   image: ({ data }) => (
     <img src={data.src} alt={data.alt ?? ""} className="rounded-md border max-w-full" style={{ borderColor: "var(--border)" }} />
   ),
+  custom: ({ data }) => <div>{typeof data === "string" ? data : JSON.stringify(data)}</div>,
 };
 
 export function renderOutput(kind: OutputKind, data: any) {

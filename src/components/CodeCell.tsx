@@ -4,11 +4,7 @@ import {
   vscDarkPlus,
   oneLight,
 } from "react-syntax-highlighter/dist/esm/styles/prism";
-import {
-  Play,
-  ChevronDown,
-  ChevronRight,
-} from "lucide-react";
+import { Play, ChevronDown, ChevronRight, Copy, Check } from "lucide-react";
 
 import ExecutionBadge from "./ExecutionBadge";
 import OutputCell from "./OutputCell";
@@ -34,71 +30,85 @@ export default function CodeCell({
   onSelect,
 }: CodeCellProps) {
   const [collapsed, setCollapsed] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const running = state.status === "running";
 
+  const handleCopy = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    navigator.clipboard.writeText(cell.code);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
+
   return (
     <div
+      id={cell.id}
       onClick={onSelect}
-      className={`jp-cell ${selected ? "jp-cell-selected" : ""}`}
+      className={`jp-cell group ${selected ? "jp-cell-selected" : ""}`}
     >
       {/* Left execution prompt */}
-
       <div className="jp-prompt">
         <ExecutionBadge kind="in" state={state} />
       </div>
 
-      {/* Cell */}
-
+      {/* Code body */}
       <div className="jp-code-body">
+        {/* Cell Toolbar */}
+        <div className="jp-code-toolbar flex items-center justify-between pb-1.5">
+          <div className="flex items-center gap-2">
+            <button
+              className="jp-collapse-btn p-0.5 rounded hover:bg-black/5 dark:hover:bg-white/10"
+              onClick={(e) => {
+                e.stopPropagation();
+                setCollapsed((v) => !v);
+              }}
+              title={collapsed ? "Expand code" : "Collapse code"}
+            >
+              {collapsed ? <ChevronRight size={14} /> : <ChevronDown size={14} />}
+            </button>
 
-        <div className="jp-code-toolbar">
+            <span className="jp-language font-mono text-[11px] font-semibold text-orange-600 dark:text-orange-400">
+              [{cell.language}]
+            </span>
+          </div>
 
-          <button
-            className="jp-collapse-btn"
-            onClick={(e) => {
-              e.stopPropagation();
-              setCollapsed((v) => !v);
-            }}
-          >
-            {collapsed ? (
-              <ChevronRight size={15} />
-            ) : (
-              <ChevronDown size={15} />
-            )}
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleCopy}
+              className="p-1 rounded opacity-60 hover:opacity-100 transition-opacity"
+              title={copied ? "Copied code!" : "Copy code"}
+            >
+              {copied ? <Check size={12} className="text-emerald-500" /> : <Copy size={12} />}
+            </button>
 
-          <span className="jp-language">
-            {cell.language}
-          </span>
-
-          <button
-            className="jp-run-btn"
-            disabled={running}
-            onClick={(e) => {
-              e.stopPropagation();
-              onRun();
-            }}
-          >
-            <Play size={13} />
-            {running ? "Running…" : "Run"}
-          </button>
-
+            <button
+              className="jp-run-btn"
+              disabled={running}
+              onClick={(e) => {
+                e.stopPropagation();
+                onRun();
+              }}
+              title="Execute cell (Shift+Enter)"
+            >
+              <Play size={11} fill="currentColor" />
+              <span>{running ? "Running…" : "Run"}</span>
+            </button>
+          </div>
         </div>
 
+        {/* Code Content */}
         {!collapsed && (
-
-          <div className="jp-code">
-
+          <div className="jp-code shadow-xs">
             <SyntaxHighlighter
               language={cell.language}
               style={theme === "dark" ? vscDarkPlus : oneLight}
               customStyle={{
                 margin: 0,
                 background: "transparent",
-                padding: "18px",
+                padding: "16px",
                 fontSize: "13px",
-                lineHeight: 1.65,
+                lineHeight: 1.6,
                 borderRadius: 0,
               }}
               codeTagProps={{
@@ -109,16 +119,11 @@ export default function CodeCell({
             >
               {cell.code}
             </SyntaxHighlighter>
-
           </div>
-
         )}
 
-        <OutputCell
-          output={cell.output}
-          state={state}
-        />
-
+        {/* Output Area */}
+        <OutputCell output={cell.output} state={state} />
       </div>
     </div>
   );
