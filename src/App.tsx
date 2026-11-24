@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import { notebook, type Cell } from "./content/notebook";
 import { useExecutionCounter } from "./hooks/useExecutionCounter";
 import { useTheme } from "./hooks/useTheme";
+import ProjectExplorer from "./components/ProjectExplorer";
 import JupyterHeader from "./components/JupyterHeader";
 import JupyterMenuBar from "./components/JupyterMenuBar";
 import NotebookToolbar from "./components/NotebookToolbar";
@@ -32,9 +33,10 @@ export default function App() {
 
   const handleSelectSection = (id: string) => {
     setSelectedId(id);
+    setIsSidebarOpen(false);
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
+      element.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
     }
   };
 
@@ -42,6 +44,7 @@ export default function App() {
   const activeSectionTitle = useMemo(() => {
     const activeCell = notebook.find((c) => c.id === selectedId);
     if (!activeCell) return "Profile & Overview";
+    if (activeCell.type === "widget") return "Project explorer";
     if (activeCell.id === "intro") return "1. Profile & Bio";
     if (activeCell.id === "diagnostics") return "2. System Diagnostics";
     if (activeCell.id === "skills") return "3. Technical Skills";
@@ -95,6 +98,7 @@ export default function App() {
       <main className="flex-1 w-full max-w-[1200px] mx-auto px-3 sm:px-6 md:px-8 py-6 sm:py-8">
         <div className="flex flex-col gap-5 sm:gap-6">
           {notebook.map((cell, index) => {
+            if (cell.type === "widget") return <ProjectExplorer key={cell.id} selected={selectedId === cell.id} onSelect={() => setSelectedId(cell.id)} onOpen={handleSelectSection} />;
             if (cell.type === "markdown") {
               return (
                 <MarkdownCell

@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import {
-  vscDarkPlus,
-  oneLight,
-} from "react-syntax-highlighter/dist/esm/styles/prism";
+import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
+import python from "react-syntax-highlighter/dist/esm/languages/prism/python";
+import oneLight from "react-syntax-highlighter/dist/esm/styles/prism/one-light";
+import vscDarkPlus from "react-syntax-highlighter/dist/esm/styles/prism/vsc-dark-plus";
 import { Play, ChevronDown, ChevronRight, Copy, Check } from "lucide-react";
 
 import ExecutionBadge from "./ExecutionBadge";
@@ -11,6 +10,8 @@ import OutputCell from "./OutputCell";
 
 import type { Cell } from "../content/notebook";
 import type { CellRunState } from "../hooks/useExecutionCounter";
+
+SyntaxHighlighter.registerLanguage("python", python);
 
 interface CodeCellProps {
   cell: Extract<Cell, { type: "code" }>;
@@ -44,6 +45,15 @@ export default function CodeCell({
   return (
     <div
       id={cell.id}
+      tabIndex={0}
+      aria-label={cell.id + " code cell"}
+      onFocus={onSelect}
+      onKeyDown={(event) => {
+        if (event.shiftKey && event.key === "Enter" && !running) {
+          event.preventDefault();
+          onRun();
+        }
+      }}
       onClick={onSelect}
       className={`jp-cell group ${selected ? "jp-cell-selected" : ""}`}
     >

@@ -16,6 +16,7 @@ export interface CodeOutput {
 }
 
 export type Cell =
+  | { id: string; type: "widget" }
   | {
       id: string;
       type: "markdown";
@@ -43,17 +44,21 @@ export const notebook: Cell[] = [
     id: "intro",
     type: "markdown",
     sectionId: "intro",
-    content: `# Krushnansh Meher
-### Software Development &nbsp;|&nbsp; AI / ML Engineering &nbsp;|&nbsp; Backend Systems
-**Pune, India** &nbsp;•&nbsp; **VIT Pune (CGPA: 9.12)** &nbsp;•&nbsp; **IEEE Published Author (INCECT 2026)**
+    content: `![Krushnansh Meher outdoors](/images/krushnansh-portrait.jpg)
 
-[![GitHub](https://img.shields.io/badge/GitHub-Krushnansh22-181717?style=flat&logo=github)](https://github.com/Krushnansh22) [![LinkedIn](https://img.shields.io/badge/LinkedIn-krushnansh--meher-0A66C2?style=flat&logo=linkedin)](https://www.linkedin.com/in/krushnansh-meher-71199a271) [![Email](https://img.shields.io/badge/Email-krushnansh22%40gmail.com-EA4335?style=flat&logo=gmail)](mailto:krushnansh22@gmail.com)
+# Krushnansh Meher
+### AI / ML Engineering · Backend Systems
 
----
+I build retrieval systems, real-time voice agents, and backend APIs. I’m studying AI & ML at VIT Pune and looking for an internship where I can take a system from prototype to deployment.
 
-> **Executive Summary**  
-> AI & ML undergraduate at Vishwakarma Institute of Technology, Pune (**CGPA: 9.12**) with production experience building backend APIs, RAG systems, and real-time voice AI. IEEE-published author (INCECT 2026) focused on retrieval, agentic systems, and on-device inference. Seeking an AI/ML or backend internship where I can ship end-to-end systems.
+**Pune, India** · **9.12 CGPA** · **IEEE INCECT 2026**
+
+[GitHub](https://github.com/Krushnansh22) · [LinkedIn](https://www.linkedin.com/in/krushnansh-meher-71199a271) · [Email](mailto:krushnansh22@gmail.com) · [Résumé](/Krushnansh_Meher_Resume_2026.docx)
 `,
+  },
+  {
+    id: "explorer",
+    type: "widget",
   },
 
   // 2. Interactive Diagnostics Code Cell
@@ -202,6 +207,9 @@ print(overview.metrics_summary())`,
 ---
 
 ### **Activities & Leadership**
+
+![Krushnansh speaking at a lectern](/images/krushnansh-speaking.png)
+
 - **President | Rotaract Club, VIT Pune** *(2026 – Present)*  
   Lead the club's executive team and direct community-service, technical innovation, and professional-development initiatives across the campus.
 - **AIML Head | IEEE CIS Chapter, VIT Pune** *(Nov 2025 – Present)*  

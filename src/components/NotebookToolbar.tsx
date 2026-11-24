@@ -1,17 +1,4 @@
-import {
-  Save,
-  Plus,
-  Scissors,
-  Copy,
-  Clipboard,
-  Play,
-  Square,
-  RotateCw,
-  ChevronsRight,
-  ListTree,
-  Check,
-} from "lucide-react";
-import { useState } from "react";
+import { Play, RotateCw, ListTree } from "lucide-react";
 
 interface NotebookToolbarProps {
   kernelBusy: boolean;
@@ -53,13 +40,6 @@ export default function NotebookToolbar({
   onToggleSidebar,
   isSidebarOpen,
 }: NotebookToolbarProps) {
-  const [saved, setSaved] = useState(false);
-
-  const handleSave = () => {
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
-  };
-
   return (
     <div
       className="sticky top-0 z-20 flex items-center justify-between px-3 py-1.5 border-b shadow-sm select-none"
@@ -70,30 +50,9 @@ export default function NotebookToolbar({
     >
       {/* Left Action Buttons */}
       <div className="flex items-center gap-0.5 sm:gap-1">
-        <ToolbarBtn title={saved ? "Saved checkpoint!" : "Save Notebook"} onClick={handleSave}>
-          {saved ? <Check size={14} className="text-emerald-500" /> : <Save size={14} />}
-        </ToolbarBtn>
-
-        <ToolbarBtn title="Insert Cell Below" onClick={() => {}}>
-          <Plus size={14} />
-        </ToolbarBtn>
-
-        <ToolbarBtn title="Cut selected cells" onClick={() => {}}>
-          <Scissors size={14} />
-        </ToolbarBtn>
-
-        <ToolbarBtn title="Copy selected cells" onClick={() => {}}>
-          <Copy size={14} />
-        </ToolbarBtn>
-
-        <ToolbarBtn title="Paste cells below" onClick={() => {}}>
-          <Clipboard size={14} />
-        </ToolbarBtn>
-
-        <span className="w-px h-4 mx-1" style={{ backgroundColor: "var(--border)" }} />
-
         {/* Run controls */}
         <button
+          disabled={kernelBusy}
           onClick={onRunAll}
           title="Run All Cells"
           className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-semibold transition-all hover:opacity-90 active:scale-95 shadow-xs"
@@ -103,20 +62,10 @@ export default function NotebookToolbar({
           }}
         >
           <Play size={12} fill="currentColor" />
-          <span className="hidden sm:inline">Run All</span>
+          <span>Run All</span>
         </button>
 
-        <ToolbarBtn title="Interrupt kernel" disabled={!kernelBusy}>
-          <Square size={12} />
-        </ToolbarBtn>
-
-        <ToolbarBtn title="Restart kernel" onClick={onRestart}>
-          <RotateCw size={13} />
-        </ToolbarBtn>
-
-        <ToolbarBtn title="Restart & Run All" onClick={onRestart}>
-          <ChevronsRight size={15} />
-        </ToolbarBtn>
+        <ToolbarBtn title="Restart kernel and run all cells" onClick={onRestart}><RotateCw size={14} /></ToolbarBtn>
 
         <span className="w-px h-4 mx-1 hidden sm:inline" style={{ backgroundColor: "var(--border)" }} />
 

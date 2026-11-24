@@ -298,3 +298,58 @@
     transform: none;
   }
 }
+
+.jp-cell {grid-template-columns:58px minmax(0,1fr)}
+.jp-cell, [id^="proj-"] {scroll-margin-top:4rem}
+.jp-cell:focus-visible, .explorer-body :focus-visible {outline:2px solid var(--selected);outline-offset:2px}
+#intro .jp-markdown {max-width:78ch;font-size:1rem}
+#intro .jp-markdown h1 {font-size:clamp(2rem,4vw,3.1rem);letter-spacing:-.055em;line-height:1.1;border:0}
+#intro .jp-markdown h3 {margin-top:0;color:var(--muted)}
+#intro .jp-markdown a, .explorer-output a {color:var(--selected);text-decoration:underline;text-underline-offset:3px}
+.explorer-body {background:var(--cell);border:1px solid var(--border);border-radius:6px;overflow:hidden}
+.explorer-title,.explorer-input,.explorer-presets {display:flex;align-items:center;gap:.65rem}
+.explorer-title {padding:.8rem 1.2rem;border-bottom:1px solid var(--border);background:var(--code);color:var(--ink)}
+.explorer-title svg {color:var(--accent)}
+.explorer-title h2 {font-size:1rem;font-weight:650}
+.explorer-input,.explorer-presets {margin:.9rem 1.2rem}
+.explorer-input label,.explorer-presets,.explorer-output {font: .8rem/1.55 "JetBrains Mono",monospace}
+.explorer-input label {display:flex;align-items:center;gap:.45rem}
+.explorer-input input {flex:1;min-width:0;border:1px solid var(--border);border-radius:4px;background:var(--code);padding:.45rem .65rem;color:var(--ink)}
+.explorer-presets {flex-wrap:wrap;gap:.4rem}
+.explorer-presets button {border:1px solid var(--border);border-radius:4px;padding:.16rem .55rem}
+.explorer-presets button:hover,.explorer-presets button[aria-pressed=true] {background:var(--accent-soft);border-color:var(--accent)}
+.explorer-output {border-top:1px solid var(--border);padding:.7rem 1.2rem 1rem}
+.explorer-output p {color:var(--muted);margin-bottom:.4rem}
+.explorer-output table {width:100%;text-align:left}
+.explorer-output th,.explorer-output td {padding:.38rem .65rem}
+.explorer-output th,.explorer-output tr:nth-child(even) {background:var(--code)}
+@media(max-width:640px){.jp-cell{grid-template-columns:28px minmax(0,1fr)}.jp-prompt{padding-right:4px;font-size:10px}.explorer-input{flex-wrap:wrap}.explorer-input label{width:100%}.explorer-input,.explorer-presets{margin:.75rem}.explorer-output{padding:.7rem}.explorer-output td,.explorer-output th{padding:.3rem}.jp-output-row{grid-template-columns:minmax(0,1fr)}.jp-output-row>.jp-prompt{justify-content:flex-start}}
+
+/* Keep the photographs within their Markdown cells, like notebook attachments. */
+#intro > .relative {padding:0;overflow:hidden}
+#intro .jp-markdown {
+  --portrait-width:34%;
+  --intro-padding:clamp(1.5rem,3.5vw,3rem);
+  max-width:none;
+  min-height:clamp(255px,26vw,340px);
+  padding:var(--intro-padding) var(--intro-padding) var(--intro-padding) calc(var(--portrait-width) + var(--intro-padding));
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+#intro .jp-markdown p:has(>img) {
+  position:absolute;
+  inset:0 auto 0 0;
+  width:var(--portrait-width);
+  margin:0;
+}
+#intro .jp-markdown img {width:100%;height:100%;object-fit:cover;object-position:50% 44%}
+#intro .jp-markdown p:not(:has(img)) {margin:.45rem 0}
+#education .jp-markdown p:has(>img) {float:right;margin:0 0 .75rem 2rem}
+#education .jp-markdown {display:flow-root}
+#education .jp-markdown img {width:clamp(120px,15vw,176px);border:1px solid var(--border);padding:4px;background:var(--cell);border-radius:5px}
+@media (max-width:640px) {
+  #intro .jp-markdown {padding:0 1rem 1rem}
+  #intro .jp-markdown p:has(>img) {position:static;width:calc(100% + 2rem);height:clamp(165px,50vw,245px);margin:0 -1rem 1rem}
+  #education .jp-markdown p:has(>img) {float:none;margin:.75rem 0}
+}

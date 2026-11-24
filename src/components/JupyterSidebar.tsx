@@ -26,11 +26,12 @@ type Tab = "toc" | "files";
 
 const sections = [
   { id: "intro", title: "1. Profile & Overview", type: "markdown" },
+  { id: "explorer", title: "Project explorer", type: "widget" },
   { id: "diagnostics", title: "2. System Diagnostics", type: "code" },
   { id: "skills", title: "3. Technical Skills", type: "markdown" },
   { id: "experience", title: "4. Work Experience", type: "markdown" },
   { id: "publication", title: "5. IEEE Publication", type: "markdown" },
-  { id: "projects", title: "6. Featured Projects", type: "projects" },
+  { id: "projects-header", title: "6. Featured Projects", type: "projects" },
   { id: "education", title: "7. Education & Leadership", type: "markdown" },
   { id: "contact", title: "8. Connect & Links", type: "markdown" },
 ];
